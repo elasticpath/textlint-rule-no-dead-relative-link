@@ -1,0 +1,7 @@
+This is a link to file that does not exists [invalidLink](invalidLink.md)  
+This is an invalid link to txt file in current directory [invalidLink](invalidLink.txt)  
+This is an invalid html link that needs to be resolved as markdown [invalidHtmlLink](invalidHtmlLink.html)
+This is an anchor link to invalid anchor in current file [invalidAnchorCurrentFile](#valid-links)
+This is an anchor link to an invalid anchor [invalidAnchorLink](../linkTestFile.md#header-7)
+This is an anchor link to an invalid anchor in file that needs to resolved as markdown [invalidAnchorLink](../linkTestFile.html#header-7)
+This is an anchor link to a file that does not exist [invalidAnchorLink](invalidLink.md#does-not-exist) 
