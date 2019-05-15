@@ -5,6 +5,13 @@
   "main": "lib/no-dead-relative-link.js",
   "author": "Parth Patel <parthopensource@gmail.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/parthpp/textlint-rule-no-dead-relative-link.git"
+  },
+  "engines": {
+    "node": ">=6.0.0"
+  },
   "scripts": {
     "test": "textlint-scripts test",
     "build": "textlint-scripts build",
