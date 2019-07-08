@@ -50,6 +50,11 @@ tester.run("no-dead-relative-links", validateRelativeLinks, {
                     message: "invalidLink.md does not exist",
                     line: 7,
                     column: 74
+                },
+                {
+                    message:"setup-introduction.md does not exist",
+                    line: 8,
+                    column: 134
                 }
             ],
             options: {

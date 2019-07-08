@@ -15,5 +15,6 @@ This is a link to valid anchor [validAnchorLink](../linkTestFile.md#header-6)
 This is a link to valid anchor in same file [validSameFileAnchor](#valid-links)
 This is a link to valid anchor in same file [validSameFileAnchor](#no-paragraph)
 This is a linkt to valid anchor in file to be resolved as markdown [validMDAnchorLink](../linkTestFile.html#header-5)
+ >This is valid link in the textlint repo [textlint](https://textlint.github.io)
 
 ## No Paragraph
