@@ -15,7 +15,7 @@ const externalLinkRegex = new RegExp(/^[a-z][a-z0-9+.-]*:/, 'i');
 
 export default function(context, options) {
     return wrapReportHandler(context, {
-        ignoreNodeTypes: [Syntax.BlockQuote, Syntax.code]
+        ignoreNodeTypes: [Syntax.code]
     }, () => handler(context, options));
 }
 

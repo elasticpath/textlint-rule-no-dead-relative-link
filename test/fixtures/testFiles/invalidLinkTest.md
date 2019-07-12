@@ -5,3 +5,4 @@ This is an anchor link to invalid anchor in current file [invalidAnchorCurrentFi
 This is an anchor link to an invalid anchor [invalidAnchorLink](../linkTestFile.md#header-7)
 This is an anchor link to an invalid anchor in file that needs to resolved as markdown [invalidAnchorLink](../linkTestFile.html#header-7)
 This is an anchor link to a file that does not exist [invalidAnchorLink](invalidLink.md#does-not-exist) 
+ > If these property values do not exist in the settings.xml, the source code might not be following the guidelines at [Setup Guide](../setup-introduction.md)
