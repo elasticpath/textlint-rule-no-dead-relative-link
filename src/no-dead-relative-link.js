@@ -1,6 +1,7 @@
 import "@babel/polyfill";
 import fs from 'fs';
-import path from 'path'
+import path from 'path';
+import url from 'url';
 import {parse, Syntax} from '@textlint/markdown-to-ast';
 import {traverse, VisitorOption} from '@textlint/ast-traverse';
 import GithubSlugger from 'github-slugger';
@@ -41,15 +42,18 @@ async function validateRelativeLink(linkNode, context, options) {
     let linkAbsoutePath = path.resolve(path.dirname(context.getFilePath()), linkNode.url);
     let linkURL = new URL("file://" + linkAbsoutePath);
     let linkedFileExtension = path.extname(linkURL.pathname);
+
+
     if (linkedFileExtension !== ".md" && options["resolve-as-markdown"] && options["resolve-as-markdown"].includes(linkedFileExtension)) {
         linkURL.pathname = linkURL.pathname.replace(linkedFileExtension, ".md");
     }
-    if (!await fileExists(linkURL.pathname)) {
+
+    if (!await fileExists(url.fileURLToPath(linkURL))) {
         reportError(linkNode, context, `${path.basename(linkURL.pathname)} does not exist`);
         return;
     } 
     if(linkURL.hash && path.extname(linkURL.pathname) === ".md") {
-        return validateAnchorLink(linkURL.pathname, linkURL.hash.slice(1), linkNode, context);
+        return validateAnchorLink(url.fileURLToPath(linkURL), linkURL.hash.slice(1), linkNode, context);
     }
 }
 

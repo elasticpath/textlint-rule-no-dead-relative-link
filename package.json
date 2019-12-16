@@ -1,6 +1,6 @@
 {
   "name": "textlint-rule-no-dead-relative-link",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Textlint rule to validate relative links(including anchor links) in markdown documents",
   "main": "lib/no-dead-relative-link.js",
   "author": "Parth Patel <parthopensource@gmail.com>",
