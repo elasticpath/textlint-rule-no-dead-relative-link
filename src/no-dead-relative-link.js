@@ -43,14 +43,15 @@ async function validateRelativeLink(linkNode, context, options) {
     let linkURL = new URL("file://" + linkAbsoutePath);
     let linkedFileExtension = path.extname(linkURL.pathname);
 
-
     if (linkedFileExtension !== ".md" && options["resolve-as-markdown"] && options["resolve-as-markdown"].includes(linkedFileExtension)) {
         linkURL.pathname = linkURL.pathname.replace(linkedFileExtension, ".md");
     }
 
     if (!await fileExists(url.fileURLToPath(linkURL))) {
-        await hasVersionedLink(options, linkURL, linkNode);
-        reportError(linkNode, context, `${path.basename(linkURL.pathname)} does not exist`);
+        let mappingExists = await hasVersionedLink(options, linkURL, linkNode);
+        if (!mappingExists) {
+            reportError(linkNode, context, `${path.basename(linkURL.pathname)} does not exist and/or has no routed path`);
+        }
         return;
     } 
     if(linkURL.hash && path.extname(linkURL.pathname) === ".md") {
@@ -64,21 +65,15 @@ async function hasVersionedLink(options, linkURL, linkNode) {
 
     for (const mapping of linkRouteMaps) {
         let sourceRegex = new RegExp(mapping["source"], 'g');
-        let destinationRegex = mapping["destination"];
+        let mappedDestination = mapping["destination"];
         if (sourceRegex.test(nodeUrl)) {
-            let replaced = nodeUrl.replace(sourceRegex, destinationRegex);
-            console.log(replaced);
-
-            return true;
+            let routedPath = nodeUrl.replace(sourceRegex, mappedDestination);
+            if (await fileExists(routedPath)) {
+                return true;
+            }
         }
     }
-
     return false;
-
-    // match link with one of the patterns
-    //  load mapping into an object
-    // if there is a match, then access the provided path and return true
-    // else return false
 }
 
 async function validateAnchorLink(filePath, anchor, linkNode, context) {
