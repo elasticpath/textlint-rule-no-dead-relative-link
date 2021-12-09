@@ -49,12 +49,36 @@ async function validateRelativeLink(linkNode, context, options) {
     }
 
     if (!await fileExists(url.fileURLToPath(linkURL))) {
+        await hasVersionedLink(options, linkURL, linkNode);
         reportError(linkNode, context, `${path.basename(linkURL.pathname)} does not exist`);
         return;
     } 
     if(linkURL.hash && path.extname(linkURL.pathname) === ".md") {
         return validateAnchorLink(url.fileURLToPath(linkURL), linkURL.hash.slice(1), linkNode, context);
     }
+}
+
+async function hasVersionedLink(options, linkURL, linkNode) {
+    let linkRouteMaps = options["link-route-map"];
+    let nodeUrl = linkNode.url;
+
+    for (const mapping of linkRouteMaps) {
+        let sourceRegex = new RegExp(mapping["source"], 'g');
+        let destinationRegex = mapping["destination"];
+        if (sourceRegex.test(nodeUrl)) {
+            let replaced = nodeUrl.replace(sourceRegex, destinationRegex);
+            console.log(replaced);
+
+            return true;
+        }
+    }
+
+    return false;
+
+    // match link with one of the patterns
+    //  load mapping into an object
+    // if there is a match, then access the provided path and return true
+    // else return false
 }
 
 async function validateAnchorLink(filePath, anchor, linkNode, context) {
