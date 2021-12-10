@@ -8,7 +8,17 @@ tester.run("no-dead-relative-links", validateRelativeLinks, {
         {
             inputPath: path.resolve("./test/fixtures/testFiles/validLinkTest.md"),
             options: {
-                "resolve-as-markdown": ".html"
+                "resolve-as-markdown": ".html",
+                "link-route-map": [
+                    {
+                        "source": "../../",
+                        "destination": "../"
+                    },
+                    {
+                        "source": "../dir/",
+                        "destination": "../"
+                    }
+                ]
             }
         }
     ],
@@ -34,17 +44,17 @@ tester.run("no-dead-relative-links", validateRelativeLinks, {
                 {
                     message: "Anchor #valid-links does not exist in invalidLinkTest.md",
                     line: 4,
-                    column: 85 
+                    column: 85
                 },
                 {
                     message: "Anchor #header-7 does not exist in linkTestFile.md",
                     line: 5,
-                    column: 65 
+                    column: 65
                 },
                 {
                     message: "Anchor #header-7 does not exist in linkTestFile.md",
                     line: 6,
-                    column: 108 
+                    column: 108
                 },
                 {
                     message: "invalidLink.md does not exist",
@@ -55,10 +65,40 @@ tester.run("no-dead-relative-links", validateRelativeLinks, {
                     message:"setup-introduction.md does not exist",
                     line: 8,
                     column: 134
+                },
+                {
+                    message:"invalidLink.md does not exist",
+                    line: 10,
+                    column: 89
+                },
+                {
+                    message:"invalidLink.md does not exist",
+                    line: 11,
+                    column: 76
+                },
+                {
+                    message:"invalidLink.md does not exist",
+                    line: 12,
+                    column: 89
+                },
+                {
+                    message:"invalidLink.md does not exist",
+                    line: 13,
+                    column: 76
                 }
             ],
             options: {
-                "resolve-as-markdown": ".html"
+                "resolve-as-markdown": ".html",
+                "link-route-map": [
+                    {
+                        "source": "../../",
+                        "destination": "../"
+                    },
+                    {
+                        "source": "../dir/",
+                        "destination": "../"
+                    }
+                ]
             }
         }
     ]
