@@ -29,7 +29,7 @@ tester.run("no-dead-relative-links", validateRelativeLinks, {
                 {
                     message: "invalidLink.md does not exist",
                     line: 1,
-                    column: 59
+                    column: 58
                 },
                 {
                     message: "invalidLink.txt does not exist",
