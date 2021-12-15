@@ -61,37 +61,6 @@ async function validateRelativeLink(linkNode, context, options) {
     }
 }
 
-// async function validateRelativeLink(linkNode, context, options) {
-//     if (options["link-route-map"]) {
-//         let linkRouteMaps = options["link-route-map"];
-//         let nodePath = linkNode.url;
-//
-//         for (const mapping of linkRouteMaps) {
-//             let sourceRegex = new RegExp(mapping["source"], 'g');
-//             let mappedDestination = mapping["destination"];
-//             if (sourceRegex.test(nodePath)) {
-//                 let routedPath = nodePath.replace(sourceRegex, mappedDestination);
-//                 linkNode.url = routedPath;
-//             }
-//         }
-//     }
-//
-//     let linkAbsoutePath = path.resolve(path.dirname(context.getFilePath()), linkNode.url);
-//     let linkURL = new URL("file://" + linkAbsoutePath);
-//     let linkedFileExtension = path.extname(linkURL.pathname);
-//
-//     if (linkedFileExtension !== ".md" && options["resolve-as-markdown"] && options["resolve-as-markdown"].includes(linkedFileExtension)) {
-//         linkURL.pathname = linkURL.pathname.replace(linkedFileExtension, ".md");
-//     }
-//     if (!await fileExists(url.fileURLToPath(linkURL))) {
-//         reportError(linkNode, context, `${path.basename(linkURL.pathname)} does not exist`);
-//         return;
-//     }
-//     if(linkURL.hash && path.extname(linkURL.pathname) === ".md") {
-//         return validateAnchorLink(url.fileURLToPath(linkURL), linkURL.hash.slice(1), linkNode, context);
-//     }
-// }
-
 async function routedPathExists(context, options, linkNode) {
     let linkRouteMaps = options["link-route-map"];
     let nodeUrl = linkNode.url;
