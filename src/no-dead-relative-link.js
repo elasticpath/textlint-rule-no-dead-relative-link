@@ -8,7 +8,6 @@ import GithubSlugger from 'github-slugger';
 import util from 'util';
 import { wrapReportHandler} from 'textlint-rule-helper';
 
-const fileExists = util.promisify(fs.exists);
 const fileRead = util.promisify(fs.readFile);
 
 //https://stackoverflow.com/a/31991870
@@ -78,6 +77,13 @@ async function routedPathExists(context, options, linkNode) {
         }
     }
     return false;
+}
+
+async function fileExists(url) {
+    let access = util.promisify(fs.access);
+    await access(url)
+        .then(() => true)
+        .catch(() => false)
 }
 
 async function validateAnchorLink(filePath, anchor, linkNode, context) {
