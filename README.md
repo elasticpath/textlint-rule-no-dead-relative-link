@@ -50,7 +50,8 @@ textlint --rule textlint-rule-no-dead-relative-link README.md
 ### resolve-as-markdown
 
 This option takes an array of file extension values and treats files with those extension as if they are markdown files.  
-For eg. With the following configuration
+
+For e.g. With the following configuration
 ```json
 {
     "rules": {
@@ -61,7 +62,35 @@ For eg. With the following configuration
 }
 ```
 
-and `[README](README.html)` as input, this rule will check for the existance of `README.md` file.
+and `[README](README.html)` as input, this rule will check for the existence of `README.md` file.
+
+### link-route-map
+This option takes an array of source and destination pairs. If a link contains the source value, then the portion of the
+link that matches the source value is replaced with the destination value.
+
+For e.g. With the following configuration
+```json
+{
+    "rules": {
+        "no-dead-relative-link": {
+            "link-route-map": [
+                {
+                  "source": "../../javadocs/",
+                  "destination": "../website/static/javadocs/"
+                },
+                {
+                  "source": "../javadocs/",
+                  "destination": "../../static/javadocs/"
+                },
+            ]
+        }
+    }
+}
+
+```
+
+and `../../javadocs/overview-summary.html` as input, this rule with check for the existence of the `overiview-summary.html`
+file at `../website/static/javadocs/overview-summary.html`.
 
 ## License
 
