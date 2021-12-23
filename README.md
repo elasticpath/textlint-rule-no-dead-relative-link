@@ -77,7 +77,7 @@ For e.g. With the following configuration
         "no-dead-relative-link": {
             "route-map": [
                 {
-                  "source": "^../javadocs/(\\d+\\.{1}\\d+\\.{1}\\w+)",
+                  "source": "^../javadocs/(\\d+\\.\\d+\\.\\w+)",
                   "destination": "../../static/javadocs/\\1"
                 }
             ]
