@@ -78,10 +78,6 @@ For e.g. With the following configuration
         "no-dead-relative-link": {
             "route-map": [
                 {
-                  "source": "^(../)\\1javadocs/",
-                  "destination": "../website/static/javadocs/"
-                },
-                {
                   "source": "^../javadocs/(\\d+\\.{1}\\d+\\.{1}\\w+)",
                   "destination": "../../static/javadocs/\\1"
                 }
@@ -92,8 +88,8 @@ For e.g. With the following configuration
 
 ```
 
-and `../../javadocs/overview-summary.html` as input, this rule with check for the existence of the `overview-summary.html`
-file at `../website/static/javadocs/overview-summary.html`.
+and `../javadocs/1.0.x/overview-summary.html` as the link being checked, this rule checks for the existence of the 
+`overview-summary.html`file at `../../static/javadocs/1.0.x/overview-summary.html`.
 
 ## License
 
