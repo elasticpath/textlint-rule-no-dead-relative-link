@@ -66,10 +66,9 @@ and `[README](README.html)` as input, this rule will check for the existence of 
 
 ### route-map
 This option takes an array of source and destination pairs. The source value is a Regex, and the destination value is a 
-String. However, the destination value can include capture groups using a "\" but remember to add an extra "\" to ensure 
-the JSON formatting is valid. If a link contains the source value, then the portion of the link that matches the source
-value is replaced with the destination value.
-
+String. The destination value can include capture groups using a "\" but add an extra "\" to ensure the JSON formatting 
+is valid. Also note, a number must reference the capture group. When a link contains the source value, then the portion 
+of the link that matches the source value is replaced with the destination value.
 
 For e.g. With the following configuration
 ```json

@@ -63,6 +63,7 @@ async function validateRelativeLink(linkNode, context, options) {
 async function routedLinkExists(context, options, linkNode) {
     let linkRouteMaps = options["route-map"];
     let nodeUrl = linkNode.url;
+    //Regex to check find forward slashes (\) that escapes capture groups
     let captureGroupRegex = new RegExp("(?<=\\.*)\\\\(?=\\d+)", "g");
 
     for (const mapping of linkRouteMaps) {
