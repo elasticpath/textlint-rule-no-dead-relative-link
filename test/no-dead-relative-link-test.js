@@ -9,7 +9,7 @@ tester.run("no-dead-relative-links", validateRelativeLinks, {
             inputPath: path.resolve("./test/fixtures/testFiles/validLinkTest.md"),
             options: {
                 "resolve-as-markdown": ".html",
-                "link-route-map": [
+                "route-map": [
                     {
                         "source": "../../",
                         "destination": "../"
@@ -89,7 +89,7 @@ tester.run("no-dead-relative-links", validateRelativeLinks, {
             ],
             options: {
                 "resolve-as-markdown": ".html",
-                "link-route-map": [
+                "route-map": [
                     {
                         "source": "../../",
                         "destination": "../"
