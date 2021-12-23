@@ -65,9 +65,11 @@ For e.g. With the following configuration
 and `[README](README.html)` as input, this rule will check for the existence of `README.md` file.
 
 ### route-map
-This option takes an array of source and destination pairs. The source value is a Regex and the destination value is a 
-String. However, the destination value can include a capture group using a "\". If a link contains the source value, 
-then the portion of the link that matches the source value is replaced with the destination value.
+This option takes an array of source and destination pairs. The source value is a Regex, and the destination value is a 
+String. However, the destination value can include capture groups using a "\" but remember to add an extra "\" to ensure 
+the JSON formatting is valid. If a link contains the source value, then the portion of the link that matches the source
+value is replaced with the destination value.
+
 
 For e.g. With the following configuration
 ```json
@@ -90,7 +92,7 @@ For e.g. With the following configuration
 
 ```
 
-and `../../javadocs/overview-summary.html` as input, this rule with check for the existence of the `overiview-summary.html`
+and `../../javadocs/overview-summary.html` as input, this rule with check for the existence of the `overview-summary.html`
 file at `../website/static/javadocs/overview-summary.html`.
 
 ## License
