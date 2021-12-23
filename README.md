@@ -64,24 +64,25 @@ For e.g. With the following configuration
 
 and `[README](README.html)` as input, this rule will check for the existence of `README.md` file.
 
-### link-route-map
-This option takes an array of source and destination pairs. If a link contains the source value, then the portion of the
-link that matches the source value is replaced with the destination value.
+### route-map
+This option takes an array of source and destination pairs. The source value is a Regex and the destination value is a 
+String. However, the destination value can include a capture group using a "\". If a link contains the source value, 
+then the portion of the link that matches the source value is replaced with the destination value.
 
 For e.g. With the following configuration
 ```json
 {
     "rules": {
         "no-dead-relative-link": {
-            "link-route-map": [
+            "route-map": [
                 {
-                  "source": "../../javadocs/",
+                  "source": "^(../)\\1javadocs/",
                   "destination": "../website/static/javadocs/"
                 },
                 {
-                  "source": "../javadocs/",
-                  "destination": "../../static/javadocs/"
-                },
+                  "source": "^../javadocs/(\\d+\\.{1}\\d+\\.{1}\\w+)",
+                  "destination": "../../static/javadocs/\\1"
+                }
             ]
         }
     }
