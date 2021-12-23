@@ -47,8 +47,8 @@ async function validateRelativeLink(linkNode, context, options) {
     }
     if (!await fileExists(url.fileURLToPath(linkURL))) {
         let mappingExists = false;
-        if (options["link-route-map"]) {
-            mappingExists = await routedPathExists(context, options, linkNode);
+        if (options["route-map"]) {
+            mappingExists = await routedLinkExists(context, options, linkNode);
         }
         if (!mappingExists) {
             reportError(linkNode, context, `${path.basename(linkURL.pathname)} does not exist`);
@@ -60,13 +60,14 @@ async function validateRelativeLink(linkNode, context, options) {
     }
 }
 
-async function routedPathExists(context, options, linkNode) {
-    let linkRouteMaps = options["link-route-map"];
+async function routedLinkExists(context, options, linkNode) {
+    let linkRouteMaps = options["route-map"];
     let nodeUrl = linkNode.url;
+    let captureGroupRegex = new RegExp("(?<=\\.*)\\\\(?=\\d+)", "g");
 
     for (const mapping of linkRouteMaps) {
-        let sourceRegex = new RegExp(mapping["source"], 'g');
-        let mappedDestination = mapping["destination"];
+        let sourceRegex = new RegExp(mapping["source"], "g");
+        let mappedDestination = mapping["destination"].replace(captureGroupRegex, "$");
         if (sourceRegex.test(nodeUrl)) {
             let routedUrl = nodeUrl.replace(sourceRegex, mappedDestination);
             let linkAbsolutePath = path.resolve(path.dirname(context.getFilePath()), routedUrl);
@@ -81,9 +82,12 @@ async function routedPathExists(context, options, linkNode) {
 
 async function fileExists(url) {
     let access = util.promisify(fs.access);
-    await access(url)
-        .then(() => true)
-        .catch(() => false)
+    try {
+        await access(url);
+        return true;
+    } catch (e) {
+        return false;
+    }
 }
 
 async function validateAnchorLink(filePath, anchor, linkNode, context) {
