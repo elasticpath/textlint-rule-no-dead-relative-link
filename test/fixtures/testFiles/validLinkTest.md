@@ -21,5 +21,7 @@ This is an invalid link routed to a valid link [invalidLink](../../linkTestFile.
 This is an invalid link routed to a valid link with an anchor [invalidAnchorLink](../../linkTestFile.md#fundamentals)
 This is an invalid link routed to a valid link [invalidLink](../dir/linkTestFile.md)
 This is an invalid link routed to a valid link with an anchor [invalidAnchorLink](../dir/linkTestFile.md#fundamentals)
+This is an invalid link routed to a valid link [invalidLink](../../subdir/linkTestFile.md)
+This is an invalid link routed to a valid link with an anchor [invalidAnchorLink](../../subdir/linkTestFile.md#fundamentals)
 
 ## No Paragraph

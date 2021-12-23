@@ -17,6 +17,10 @@ tester.run("no-dead-relative-links", validateRelativeLinks, {
                     {
                         "source": "../dir/",
                         "destination": "../"
+                    },
+                    {
+                        "source": "../../(subdir)/",
+                        "destination": "\\1/"
                     }
                 ]
             }
