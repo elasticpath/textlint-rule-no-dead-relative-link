@@ -40,12 +40,10 @@ async function validateLinkNode(linkNode, context, options) {
 async function validateRelativeLink(linkNode, context, options) {
     let linkURL = getLinkURL(linkNode.url, context, options);
     if (!await fileExists(url.fileURLToPath(linkURL))) {
-        let hasRoutedLink = false;
         if (options["route-map"]) {
-            hasRoutedLink = await routedLinkExists(linkNode, context, options);
-        }
-        if (!hasRoutedLink) {
-            reportError(linkNode, context, `${path.basename(linkURL.pathname)} does not exist`);
+            if (!await routedLinkExists(linkNode, context, options)) {
+                reportError(linkNode, context, `${path.basename(linkURL.pathname)} does not exist`);
+            }
         }
         return;
     }

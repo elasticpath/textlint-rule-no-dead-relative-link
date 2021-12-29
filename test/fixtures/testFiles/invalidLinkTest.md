@@ -6,8 +6,3 @@ This is an anchor link to an invalid anchor [invalidAnchorLink](../linkTestFile.
 This is an anchor link to an invalid anchor in file that needs to resolved as markdown [invalidAnchorLink](../linkTestFile.html#header-7)
 This is an anchor link to a file that does not exist [invalidAnchorLink](invalidLink.md#does-not-exist)
  > If these property values do not exist in the settings.xml, the source code might not be following the guidelines at [Setup Guide](../setup-introduction.md)
-
-This is an invalid anchor link routed to a file that does not exist [invalidAnchorLink](../../invalidLink.md#does-not-exist)
-This is an invalid link routed to a file that does not exist [invalidLink](../../invalidLink.md)
-This is an invalid anchor link routed to a file that does not exist [invalidAnchorLink](../dir/invalidLink.md#does-not-exist)
-This is an invalid link routed to a file that does not exist [invalidLink](../dir/invalidLink.md)
