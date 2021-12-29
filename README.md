@@ -49,7 +49,7 @@ textlint --rule textlint-rule-no-dead-relative-link README.md
 
 ### resolve-as-markdown
 
-This option takes an array of file extension values and treats files with those extension as if they are markdown files.  
+This option takes an array of file extension values and treats files with those extensions as if they are markdown files.  
 
 For e.g. With the following configuration
 ```json
@@ -65,10 +65,10 @@ For e.g. With the following configuration
 and `[README](README.html)` as input, this rule will check for the existence of `README.md` file.
 
 ### route-map
-This option takes an array of source and destination pairs. The source value is a Regex, and the destination value is a 
-String. The destination value can include capture groups using a "\" but add an extra "\" to ensure the JSON formatting 
-is valid. Also note, a number must reference the capture group. When a link contains the source value, then the portion 
-of the link that matches the source value is replaced with the destination value.
+Use this option when relative links need to be validated using an alternate file path. 
+
+This option takes an array of source and destination pairs. The source value is a `Regex`, and the destination value is 
+a `String` that can include capture groups from the `source` using the `$` notation. 
 
 For e.g. With the following configuration
 ```json
@@ -78,7 +78,7 @@ For e.g. With the following configuration
             "route-map": [
                 {
                   "source": "^../javadocs/(\\d+\\.\\d+\\.\\w+)",
-                  "destination": "../../static/javadocs/\\1"
+                  "destination": "../../static/javadocs/$1"
                 }
             ]
         }
