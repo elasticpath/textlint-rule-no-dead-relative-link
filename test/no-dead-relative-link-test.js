@@ -20,7 +20,7 @@ tester.run("no-dead-relative-links", validateRelativeLinks, {
                     },
                     {
                         "source": "../../(subdir)/",
-                        "destination": "\\1/"
+                        "destination": "$1/"
                     }
                 ]
             }
