@@ -38,47 +38,50 @@ async function validateLinkNode(linkNode, context, options) {
 }
 
 async function validateRelativeLink(linkNode, context, options) {
-    let linkAbsolutePath = path.resolve(path.dirname(context.getFilePath()), linkNode.url);
-    let linkURL = new URL("file://" + linkAbsolutePath);
-    let linkedFileExtension = path.extname(linkURL.pathname);
-
-    if (linkedFileExtension !== ".md" && options["resolve-as-markdown"] && options["resolve-as-markdown"].includes(linkedFileExtension)) {
-        linkURL.pathname = linkURL.pathname.replace(linkedFileExtension, ".md");
-    }
+    let linkURL = getLinkURL(linkNode.url, context, options);
     if (!await fileExists(url.fileURLToPath(linkURL))) {
-        let mappingExists = false;
+        let hasRoutedLink = false;
         if (options["route-map"]) {
-            mappingExists = await routedLinkExists(context, options, linkNode);
+            hasRoutedLink = await routedLinkExists(linkNode, context, options);
         }
-        if (!mappingExists) {
+        if (!hasRoutedLink) {
             reportError(linkNode, context, `${path.basename(linkURL.pathname)} does not exist`);
         }
         return;
     }
-    if(linkURL.hash && path.extname(linkURL.pathname) === ".md") {
+
+    if (linkURL.hash && path.extname(linkURL.pathname) === ".md") {
         return validateAnchorLink(url.fileURLToPath(linkURL), linkURL.hash.slice(1), linkNode, context);
     }
 }
 
-async function routedLinkExists(context, options, linkNode) {
+async function routedLinkExists(linkNode, context, options) {
     let linkRouteMaps = options["route-map"];
     let nodeUrl = linkNode.url;
-    //Regex to check find forward slashes (\) that escapes capture groups
-    let captureGroupRegex = new RegExp("(?<=\\.*)\\\\(?=\\d+)", "g");
 
     for (const mapping of linkRouteMaps) {
         let sourceRegex = new RegExp(mapping["source"], "g");
-        let mappedDestination = mapping["destination"].replace(captureGroupRegex, "$");
+        let mappedDestination = mapping["destination"]
         if (sourceRegex.test(nodeUrl)) {
             let routedUrl = nodeUrl.replace(sourceRegex, mappedDestination);
-            let linkAbsolutePath = path.resolve(path.dirname(context.getFilePath()), routedUrl);
-            let linkURL = new URL("file://" + linkAbsolutePath);
+            let linkURL = getLinkURL(routedUrl, context, options);
             if (await fileExists(url.fileURLToPath(linkURL))) {
                 return true;
             }
         }
     }
     return false;
+}
+
+function getLinkURL(nodeURL, context, options) {
+    let linkAbsolutePath = path.resolve(path.dirname(context.getFilePath()), nodeURL);
+    let linkURL = new URL("file://" + linkAbsolutePath);
+    let linkedFileExtension = path.extname(linkURL.pathname);
+    if (linkedFileExtension !== ".md" && options["resolve-as-markdown"] && options["resolve-as-markdown"].includes(linkedFileExtension)) {
+        linkURL.pathname = linkURL.pathname.replace(linkedFileExtension, ".md");
+    }
+
+    return linkURL;
 }
 
 async function fileExists(url) {
