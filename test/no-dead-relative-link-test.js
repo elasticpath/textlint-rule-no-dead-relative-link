@@ -3,27 +3,23 @@ import validateRelativeLinks from '../src/no-dead-relative-link';
 import path from 'path';
 const tester = new TextLintTester();
 
-tester.run("no-dead-relative-links", validateRelativeLinks, {
+tester.run(
+    "no-dead-relative-links: with resolve-as-markdown option",
+    {
+        rules: [
+            {
+                ruleId: "no-dead-relative-link",
+                rule: validateRelativeLinks,
+                options: {
+                    "resolve-as-markdown": ".html"
+                }
+            }
+        ]
+    },
+    {
     valid: [
         {
             inputPath: path.resolve("./test/fixtures/testFiles/validLinkTest.md"),
-            options: {
-                "resolve-as-markdown": ".html",
-                "route-map": [
-                    {
-                        "source": "../../",
-                        "destination": "../"
-                    },
-                    {
-                        "source": "../dir/",
-                        "destination": "../"
-                    },
-                    {
-                        "source": "../../(subdir)/",
-                        "destination": "$1/"
-                    }
-                ]
-            }
         }
     ],
     invalid: [
@@ -68,42 +64,75 @@ tester.run("no-dead-relative-links", validateRelativeLinks, {
                 {
                     message:"setup-introduction.md does not exist",
                     line: 8,
-                    column: 134
-                },
-                {
-                    message:"invalidLink.md does not exist",
-                    line: 10,
-                    column: 89
-                },
-                {
-                    message:"invalidLink.md does not exist",
-                    line: 11,
-                    column: 76
-                },
-                {
-                    message:"invalidLink.md does not exist",
-                    line: 12,
-                    column: 89
-                },
-                {
-                    message:"invalidLink.md does not exist",
-                    line: 13,
-                    column: 76
+                    column: 133
                 }
-            ],
-            options: {
-                "resolve-as-markdown": ".html",
-                "route-map": [
-                    {
-                        "source": "../../",
-                        "destination": "../"
-                    },
-                    {
-                        "source": "../dir/",
-                        "destination": "../"
-                    }
-                ]
+            ]
+        }
+    ]
+});
+tester.run(
+    "no-dead-relative-links: with route-map and resolve-as-markdown options",
+    {
+        rules: [
+            {
+                ruleId: "no-dead-relative-link",
+                rule: validateRelativeLinks,
+                options: {
+                    "resolve-as-markdown": ".html",
+                    "route-map": [
+                        {
+                            "source": "../../",
+                            "destination": "../"
+                        },
+                        {
+                            "source": "../dir/",
+                            "destination": "../"
+                        },
+                        {
+                            "source": "../../(subdir)/",
+                            "destination": "$1/"
+                        }
+                    ]
+                }
             }
+        ]
+    },
+    {
+    valid: [
+        {
+            inputPath: path.resolve("./test/fixtures/testFiles/validLinkRoutingTest.md"),
+        }
+    ],
+    invalid: [
+        {
+            inputPath: path.resolve("./test/fixtures/testFiles/invalidLinkRoutingTest.md"),
+            errors: [
+                {
+                    message: "invalidLink.md does not exist",
+                    line: 1,
+                    column: 85
+                },
+                {
+                    message: "invalidLink.md does not exist",
+                    line: 2,
+                    column: 64
+                },
+                {
+                    message: "invalidLink.md does not exist",
+                    line: 3,
+                    column: 128
+                },
+                {
+                    message: "invalidLink.md does not exist",
+                    line: 4,
+                    column: 105
+                },
+                {
+                    message: "Anchor #header-7 does not exist in linkTestFile.md",
+                    line: 5,
+                    column: 113
+                }
+            ]
         }
     ]
 });

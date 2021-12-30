@@ -14,16 +14,7 @@ This is a link to valid anchor [validAnchorLink](../linkTestFile.md#header-5)
 This is a link to valid anchor [validAnchorLink](../linkTestFile.md#header-6)
 This is a link to valid anchor in same file [validSameFileAnchor](#valid-links)
 This is a link to valid anchor in same file [validSameFileAnchor](#no-paragraph)
-This is a link to valid anchor in file to be resolved as markdown [validMDAnchorLink](../linkTestFile.html#header-5)
- >This is valid link in the textlint repo [textlint](https://textlint.github.io)
-
-This is an invalid link routed to a valid link [invalidLink](../../linkTestFile.md)
-This is an invalid link routed to a valid link with an anchor [invalidAnchorLink](../../linkTestFile.md#fundamentals)
-This is an invalid link routed to a valid link [invalidLink](../dir/linkTestFile.md)
-This is an invalid link routed to a valid link with an anchor [invalidAnchorLink](../dir/linkTestFile.md#fundamentals)
-This is an invalid link routed to a valid link [invalidLink](../../subdir/linkTestFile.md)
-This is an invalid link routed to a valid link with an anchor [invalidAnchorLink](../../subdir/linkTestFile.md#fundamentals)
-This is an invalid html file that needs to be resolved as markdown routed to a valid link [invalidHtmlLink](../../linkTestFile.html)
-This is an invalid html file that needs to be resolved as markdown routed to a valid link with an anchor [invalidHtmlAnchorLink](../../linkTestFile.html#fundamentals)
+This is a linkt to valid anchor in file to be resolved as markdown [validMDAnchorLink](../linkTestFile.html#header-5)
+>This is valid link in the textlint repo [textlint](https://textlint.github.io)
 
 ## No Paragraph
