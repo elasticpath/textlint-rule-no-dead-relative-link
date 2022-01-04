@@ -81,8 +81,8 @@ tester.run(
                     "resolve-as-markdown": ".html",
                     "route-map": [
                         {
-                            "source": "../../",
-                            "destination": "../"
+                            "source": "../../invalidLink.md",
+                            "destination": "../invalidLink.md"
                         },
                         {
                             "source": "../dir/",
