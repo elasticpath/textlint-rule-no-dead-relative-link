@@ -77,18 +77,46 @@ For e.g. With the following configuration
         "no-dead-relative-link": {
             "route-map": [
                 {
-                  "source": "^../javadocs/(\\d+\\.\\d+\\.\\w+)",
-                  "destination": "../../static/javadocs/$1"
+                    "source": "^../javadocs/(\\d+\\.\\d+\\.\\w+)", 
+                    "destination": "../../static/javadocs/$1"
                 }
             ]
         }
     }
 }
-
 ```
 
 and `../javadocs/1.0.x/overview-summary.html` as the link being checked, this rule checks for the existence of the 
-`overview-summary.html`file at `../../static/javadocs/1.0.x/overview-summary.html`.
+`overview-summary.html` file at `../../static/javadocs/1.0.x/overview-summary.html`.
+
+##### Note #####
+If a link matches multiple `source` regexes, the `route-map` option will use the first `source` regex the link matches, 
+which may not be the desired `source` and `destination` pair. See below to see an example of that.
+
+
+For e.g. With the following configuration
+```json
+{
+    "rules": {
+        "no-dead-relative-link": {
+            "route-map": [
+                {
+                    "source": "../../javadocs/",
+                    "destination": "../website/static/javadocs/"
+                },
+                {
+                    "source": "../javadocs/1.0.x/",
+                    "destination": "../../static/javadocs/1.0.x/"
+                }
+            ]
+        }
+    }
+}
+```
+
+and `../../javadocs/1.0.x/overview-summary.html` as the link being checked, this rule checks for the existence of the
+`overview-summary.html` file at the first destination `../website/static/javadocs/1.0.x/overview-summary.html` instead 
+of the second destination `../../static/javadocs/1.0.x/overview-summary.html`.
 
 ## License
 
