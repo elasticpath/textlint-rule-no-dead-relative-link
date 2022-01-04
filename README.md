@@ -90,9 +90,8 @@ and `../javadocs/1.0.x/overview-summary.html` as the link being checked, this ru
 `overview-summary.html` file at `../../static/javadocs/1.0.x/overview-summary.html`.
 
 ##### Note #####
-If a link matches multiple `source` regexes, the `route-map` option will use the first `source` regex the link matches, 
-which may not be the desired `source` and `destination` pair. See below to see an example of that.
-
+Ensure each `route-map` pair is specific because the route-map option will validate relative links using the first 
+matching regex found in the configuration.
 
 For e.g. With the following configuration
 ```json
