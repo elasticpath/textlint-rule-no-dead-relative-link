@@ -40,19 +40,19 @@ async function validateLinkNode(linkNode, context, options) {
 async function validateRelativeLink(linkNode, context, options) {
     let linkURL = getLinkURL(linkNode.url, context, options);
     if (!await fileExists(url.fileURLToPath(linkURL))) {
-        let routedLink;
         if (options["route-map"]) {
-            routedLink = await getRoutedLink(linkNode, context, options);
-        }
-        if (routedLink == null) {
+            linkURL = await getRoutedLink(linkNode, context, options);
+            if (linkURL && !await fileExists(url.fileURLToPath(linkURL))) {
+                reportError(linkNode, context, `${path.basename(linkURL.pathname)} does not exist`);
+                return;
+            }
+        } else {
             reportError(linkNode, context, `${path.basename(linkURL.pathname)} does not exist`);
-        } else if (routedLink.hash && path.extname(routedLink.pathname) === ".md") {
-            return validateAnchorLink(url.fileURLToPath(routedLink), routedLink.hash.slice(1), linkNode, context);
+            return;
         }
-        return;
     }
 
-    if (linkURL.hash && path.extname(linkURL.pathname) === ".md") {
+    if (linkURL && linkURL.hash && path.extname(linkURL.pathname) === ".md") {
         return validateAnchorLink(url.fileURLToPath(linkURL), linkURL.hash.slice(1), linkNode, context);
     }
 }
@@ -67,9 +67,7 @@ async function getRoutedLink(linkNode, context, options) {
         if (sourceRegex.test(nodeUrl)) {
             let routedUrl = nodeUrl.replace(sourceRegex, mappedDestination);
             let linkURL = getLinkURL(routedUrl, context, options);
-            if (await fileExists(url.fileURLToPath(linkURL))) {
-                return linkURL;
-            }
+            return linkURL;
         }
     }
 }
