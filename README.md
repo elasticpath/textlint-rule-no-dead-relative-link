@@ -49,8 +49,9 @@ textlint --rule textlint-rule-no-dead-relative-link README.md
 
 ### resolve-as-markdown
 
-This option takes an array of file extension values and treats files with those extension as if they are markdown files.  
-For eg. With the following configuration
+This option takes an array of file extension values and treats files with those extensions as if they are markdown files.  
+
+For e.g. With the following configuration
 ```json
 {
     "rules": {
@@ -61,7 +62,60 @@ For eg. With the following configuration
 }
 ```
 
-and `[README](README.html)` as input, this rule will check for the existance of `README.md` file.
+and `[README](README.html)` as input, this rule will check for the existence of `README.md` file.
+
+### route-map
+Use this option when relative links need to be validated using an alternate file path. 
+
+This option takes an array of source and destination pairs. The source value is a `Regex`, and the destination value is 
+a `String` that can include capture groups from the `source` using the `$` notation. 
+
+For e.g. With the following configuration
+```json
+{
+    "rules": {
+        "no-dead-relative-link": {
+            "route-map": [
+                {
+                    "source": "^../javadocs/(\\d+\\.\\d+\\.\\w+)", 
+                    "destination": "../../static/javadocs/$1"
+                }
+            ]
+        }
+    }
+}
+```
+
+and `../javadocs/1.0.x/overview-summary.html` as the link being checked, this rule checks for the existence of the 
+`overview-summary.html` file at `../../static/javadocs/1.0.x/overview-summary.html`.
+
+##### Note #####
+Ensure each `route-map` pair is specific because the route-map option will validate relative links using the first 
+matching regex found in the configuration.
+
+For e.g. With the following configuration
+```json
+{
+    "rules": {
+        "no-dead-relative-link": {
+            "route-map": [
+                {
+                    "source": "../../javadocs/",
+                    "destination": "../website/static/javadocs/"
+                },
+                {
+                    "source": "../javadocs/1.0.x/",
+                    "destination": "../../static/javadocs/1.0.x/"
+                }
+            ]
+        }
+    }
+}
+```
+
+and `../../javadocs/1.0.x/overview-summary.html` as the link being checked, this rule checks for the existence of the
+`overview-summary.html` file at the first destination `../website/static/javadocs/1.0.x/overview-summary.html` instead 
+of the second destination `../../static/javadocs/1.0.x/overview-summary.html`.
 
 ## License
 

@@ -8,7 +8,6 @@ import GithubSlugger from 'github-slugger';
 import util from 'util';
 import { wrapReportHandler} from 'textlint-rule-helper';
 
-const fileExists = util.promisify(fs.exists);
 const fileRead = util.promisify(fs.readFile);
 
 //https://stackoverflow.com/a/31991870
@@ -39,21 +38,58 @@ async function validateLinkNode(linkNode, context, options) {
 }
 
 async function validateRelativeLink(linkNode, context, options) {
-    let linkAbsoutePath = path.resolve(path.dirname(context.getFilePath()), linkNode.url);
-    let linkURL = new URL("file://" + linkAbsoutePath);
+    let linkURL = getLinkURL(linkNode.url, context, options);
+    if (!await fileExists(url.fileURLToPath(linkURL))) {
+        if (options["route-map"]) {
+            linkURL = await getRoutedLink(linkNode, context, options);
+            if (linkURL && !await fileExists(url.fileURLToPath(linkURL))) {
+                reportError(linkNode, context, `${path.basename(linkURL.pathname)} does not exist`);
+                return;
+            }
+        } else {
+            reportError(linkNode, context, `${path.basename(linkURL.pathname)} does not exist`);
+            return;
+        }
+    }
+
+    if (linkURL && linkURL.hash && path.extname(linkURL.pathname) === ".md") {
+        return validateAnchorLink(url.fileURLToPath(linkURL), linkURL.hash.slice(1), linkNode, context);
+    }
+}
+
+async function getRoutedLink(linkNode, context, options) {
+    let linkRouteMaps = options["route-map"];
+    let nodeUrl = linkNode.url;
+
+    for (const mapping of linkRouteMaps) {
+        let sourceRegex = new RegExp(mapping["source"], "g");
+        let mappedDestination = mapping["destination"]
+        if (sourceRegex.test(nodeUrl)) {
+            let routedUrl = nodeUrl.replace(sourceRegex, mappedDestination);
+            let linkURL = getLinkURL(routedUrl, context, options);
+            return linkURL;
+        }
+    }
+}
+
+function getLinkURL(nodeURL, context, options) {
+    let linkAbsolutePath = path.resolve(path.dirname(context.getFilePath()), nodeURL);
+    let linkURL = new URL("file://" + linkAbsolutePath);
     let linkedFileExtension = path.extname(linkURL.pathname);
-
-
     if (linkedFileExtension !== ".md" && options["resolve-as-markdown"] && options["resolve-as-markdown"].includes(linkedFileExtension)) {
         linkURL.pathname = linkURL.pathname.replace(linkedFileExtension, ".md");
     }
 
-    if (!await fileExists(url.fileURLToPath(linkURL))) {
-        reportError(linkNode, context, `${path.basename(linkURL.pathname)} does not exist`);
-        return;
-    } 
-    if(linkURL.hash && path.extname(linkURL.pathname) === ".md") {
-        return validateAnchorLink(url.fileURLToPath(linkURL), linkURL.hash.slice(1), linkNode, context);
+    return linkURL;
+}
+
+async function fileExists(url) {
+    let access = util.promisify(fs.access);
+    try {
+        await access(url);
+        return true;
+    } catch (e) {
+        return false;
     }
 }
 

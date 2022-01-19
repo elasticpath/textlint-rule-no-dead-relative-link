@@ -1,0 +1,5 @@
+This invalid link to a file with an anchor has no valid routing [invalidAnchorLink](../../invalidLink.md#does-not-exist)
+This invalid link to a file has no valid routing [invalidLink](../../invalidLink.md)
+This invalid link to a html file with an anchor that needs to be resolved as markdown has no valid routing [invalidAnchorLink](../dir/invalidLink.html#does-not-exist)
+This invalid link to html file that needs to be resolved as markdown has no valid routing [invalidLink](../dir/invalidLink.html)
+This invalid link to a file with an anchor is routed to a valid link with an invalid anchor [invalidAnchorLink](../../subdir/linkTestFile.md#header-7)

@@ -1,5 +1,5 @@
 # Valid Links
-This is an valid empty link [emptyLink]()  
+This is a valid empty link [emptyLink]()  
 This is valid link in the current directory [validLink](linkTestFile.md)  
 This is valid link in the current directory to txt file [validLink](linkTestTxtFile.txt)  
 This is valid link to file in sub directory [validSubLink](./subDir/linkTestFile.md)  
@@ -15,6 +15,6 @@ This is a link to valid anchor [validAnchorLink](../linkTestFile.md#header-6)
 This is a link to valid anchor in same file [validSameFileAnchor](#valid-links)
 This is a link to valid anchor in same file [validSameFileAnchor](#no-paragraph)
 This is a linkt to valid anchor in file to be resolved as markdown [validMDAnchorLink](../linkTestFile.html#header-5)
- >This is valid link in the textlint repo [textlint](https://textlint.github.io)
+>This is valid link in the textlint repo [textlint](https://textlint.github.io)
 
 ## No Paragraph
