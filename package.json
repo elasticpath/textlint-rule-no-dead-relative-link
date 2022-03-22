@@ -23,7 +23,7 @@
     "textlint-rule-helper": "^2.1.1"
   },
   "devDependencies": {
-    "eslint": "^5.16.0",
+    "eslint": "^8.11.0",
     "textlint-scripts": "^2.1.0"
   },
   "directories": {
