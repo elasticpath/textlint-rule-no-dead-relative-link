@@ -116,7 +116,3 @@ For e.g. With the following configuration
 and `../../javadocs/1.0.x/overview-summary.html` as the link being checked, this rule checks for the existence of the
 `overview-summary.html` file at the first destination `../website/static/javadocs/1.0.x/overview-summary.html` instead 
 of the second destination `../../static/javadocs/1.0.x/overview-summary.html`.
-
-## License
-
-MIT © parthopensource@gmail.com
