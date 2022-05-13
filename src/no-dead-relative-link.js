@@ -48,7 +48,7 @@ async function validateRelativeLink(linkNode, context, options) {
                 return;
             }
             else if (!await fileExists(url.fileURLToPath(routedLinkURL))) {
-                reportError(linkNode, context, `The routed destination for ${path.basename(linkURL.pathname)} does not exist`);
+                reportError(linkNode, context, `The routed destination for ${path.basename(routedLinkURL.pathname)} does not exist`);
                 return;
             }
         } else {
