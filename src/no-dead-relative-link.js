@@ -43,12 +43,12 @@ async function validateRelativeLink(linkNode, context, options) {
     if (!await fileExists(url.fileURLToPath(linkURL))) {
         if (options["route-map"]) {
             routedLinkURL = await getRoutedLink(linkNode, context, options);
-            if (routedLinkURL && !await fileExists(url.fileURLToPath(routedLinkURL))) {
-                reportError(linkNode, context, `The routed destination for ${path.basename(linkURL.pathname)} does not exist`);
-                return;
-            }
             if (!routedLinkURL) {
                 reportError(linkNode, context, `${path.basename(linkURL.pathname)} has no mapped routing`);
+                return;
+            }
+            else if (!await fileExists(url.fileURLToPath(routedLinkURL))) {
+                reportError(linkNode, context, `The routed destination for ${path.basename(linkURL.pathname)} does not exist`);
                 return;
             }
         } else {
@@ -74,8 +74,7 @@ async function getRoutedLink(linkNode, context, options) {
         let mappedDestination = mapping["destination"]
         if (sourceRegex.test(nodeUrl)) {
             let routedUrl = nodeUrl.replace(sourceRegex, mappedDestination);
-            let linkURL = getLinkURL(routedUrl, context, options);
-            return linkURL;
+            return getLinkURL(routedUrl, context, options);
         }
     }
 }
