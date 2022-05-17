@@ -81,16 +81,24 @@ tester.run(
                     "resolve-as-markdown": ".html",
                     "route-map": [
                         {
-                            "source": "../../invalidLink.md",
-                            "destination": "../invalidLink.md"
+                            "source": "^../dir/subdir",
+                            "destination": "/dir/subdir"
                         },
                         {
-                            "source": "../dir/",
+                            "source": "^../dir/",
                             "destination": "../"
                         },
                         {
-                            "source": "../../(subdir)/",
+                            "source": "^../../(subdir)/",
                             "destination": "$1/"
+                        },
+                        {
+                            "source": "^../../linkTestFile.md",
+                            "destination": "../linkTestFile.md"
+                        },
+                        {
+                            "source": "^../../linkTestFile.html",
+                            "destination": "../linkTestFile.md"
                         }
                     ]
                 }
@@ -108,31 +116,144 @@ tester.run(
             inputPath: path.resolve("./test/fixtures/testFiles/invalidLinkRoutingTest.md"),
             errors: [
                 {
-                    message: "invalidLink.md does not exist",
+                    message: "The routed destination for invalidLink.md does not exist",
                     line: 1,
-                    column: 85
+                    column: 120
                 },
                 {
-                    message: "invalidLink.md does not exist",
+                    message: "The routed destination for invalidLink.md does not exist",
                     line: 2,
-                    column: 64
+                    column: 99
                 },
                 {
-                    message: "invalidLink.md does not exist",
+                    message: "The routed destination for invalidLink.md does not exist",
                     line: 3,
-                    column: 128
+                    column: 163
                 },
                 {
-                    message: "invalidLink.md does not exist",
+                    message: "The routed destination for invalidLink.md does not exist",
                     line: 4,
-                    column: 105
+                    column: 140
                 },
                 {
                     message: "Anchor #header-7 does not exist in linkTestFile.md",
                     line: 5,
-                    column: 113
+                    column: 129
+                },
+                {
+                    message: "linkTestFile.md has no mapped routing",
+                    line: 6,
+                    column: 72
+                },
+                {
+                    message: "linkTestFile.md has no mapped routing",
+                    line: 7,
+                    column: 87
+                },
+                {
+                    message: "The routed destination for linkTestFile.md does not exist",
+                    line: 8,
+                    column: 85
+                },
+                {
+                    message: "The routed destination for linkTestFile.md does not exist",
+                    line: 9,
+                    column: 100
                 }
             ]
         }
     ]
 });
+tester.run(
+    "no-dead-relative-links: with route-map only",
+    {
+        rules: [
+            {
+                ruleId: "no-dead-relative-link",
+                rule: validateRelativeLinks,
+                options: {
+                    "route-map": [
+                        {
+                            "source": "^../dir/subdir",
+                            "destination": "/dir/subdir"
+                        },
+                        {
+                            "source": "^../dir/",
+                            "destination": "../"
+                        },
+                        {
+                            "source": "^../../(subdir)/",
+                            "destination": "$1/"
+                        },
+                        {
+                            "source": "^../../linkTestFile.md",
+                            "destination": "../linkTestFile.md"
+                        },
+                        {
+                            "source": "^../../linkTestFile.html",
+                            "destination": "../linkTestFile.md"
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        valid: [
+            {
+                inputPath: path.resolve("./test/fixtures/testFiles/validLinkRoutingTest.md"),
+            }
+        ],
+        invalid: [
+            {
+                inputPath: path.resolve("./test/fixtures/testFiles/invalidLinkRoutingTest.md"),
+                errors: [
+                    {
+                        message: "The routed destination for invalidLink.md does not exist",
+                        line: 1,
+                        column: 120
+                    },
+                    {
+                        message: "The routed destination for invalidLink.md does not exist",
+                        line: 2,
+                        column: 99
+                    },
+                    {
+                        message: "The routed destination for invalidLink.html does not exist",
+                        line: 3,
+                        column: 163
+                    },
+                    {
+                        message: "The routed destination for invalidLink.html does not exist",
+                        line: 4,
+                        column: 140
+                    },
+                    {
+                        message: "Anchor #header-7 does not exist in linkTestFile.md",
+                        line: 5,
+                        column: 129
+                    },
+                    {
+                        message: "linkTestFile.md has no mapped routing",
+                        line: 6,
+                        column: 72
+                    },
+                    {
+                        message: "linkTestFile.md has no mapped routing",
+                        line: 7,
+                        column: 87
+                    },
+                    {
+                        message: "The routed destination for linkTestFile.md does not exist",
+                        line: 8,
+                        column: 85
+                    },
+                    {
+                        message: "The routed destination for linkTestFile.md does not exist",
+                        line: 9,
+                        column: 100
+                    }
+                ]
+            }
+        ]
+    });

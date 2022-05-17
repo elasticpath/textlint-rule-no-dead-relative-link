@@ -6,7 +6,7 @@ import {parse, Syntax} from '@textlint/markdown-to-ast';
 import {traverse, VisitorOption} from '@textlint/ast-traverse';
 import GithubSlugger from 'github-slugger';
 import util from 'util';
-import { wrapReportHandler} from 'textlint-rule-helper';
+import {wrapReportHandler} from 'textlint-rule-helper';
 
 const fileRead = util.promisify(fs.readFile);
 
@@ -39,11 +39,16 @@ async function validateLinkNode(linkNode, context, options) {
 
 async function validateRelativeLink(linkNode, context, options) {
     let linkURL = getLinkURL(linkNode.url, context, options);
+    let routedLinkURL;
     if (!await fileExists(url.fileURLToPath(linkURL))) {
         if (options["route-map"]) {
-            linkURL = await getRoutedLink(linkNode, context, options);
-            if (linkURL && !await fileExists(url.fileURLToPath(linkURL))) {
-                reportError(linkNode, context, `${path.basename(linkURL.pathname)} does not exist`);
+            routedLinkURL = await getRoutedLink(linkNode, context, options);
+            if (!routedLinkURL) {
+                reportError(linkNode, context, `${path.basename(linkURL.pathname)} has no mapped routing`);
+                return;
+            }
+            else if (!await fileExists(url.fileURLToPath(routedLinkURL))) {
+                reportError(linkNode, context, `The routed destination for ${path.basename(routedLinkURL.pathname)} does not exist`);
                 return;
             }
         } else {
@@ -52,6 +57,10 @@ async function validateRelativeLink(linkNode, context, options) {
         }
     }
 
+    // use the routedLinkURL to check for the anchor
+    if (routedLinkURL) {
+        linkURL = routedLinkURL;
+    }
     if (linkURL && linkURL.hash && path.extname(linkURL.pathname) === ".md") {
         return validateAnchorLink(url.fileURLToPath(linkURL), linkURL.hash.slice(1), linkNode, context);
     }
@@ -60,14 +69,12 @@ async function validateRelativeLink(linkNode, context, options) {
 async function getRoutedLink(linkNode, context, options) {
     let linkRouteMaps = options["route-map"];
     let nodeUrl = linkNode.url;
-
     for (const mapping of linkRouteMaps) {
         let sourceRegex = new RegExp(mapping["source"], "g");
         let mappedDestination = mapping["destination"]
         if (sourceRegex.test(nodeUrl)) {
             let routedUrl = nodeUrl.replace(sourceRegex, mappedDestination);
-            let linkURL = getLinkURL(routedUrl, context, options);
-            return linkURL;
+            return getLinkURL(routedUrl, context, options);
         }
     }
 }

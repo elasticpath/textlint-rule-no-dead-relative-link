@@ -89,7 +89,7 @@ For e.g. With the following configuration
 and `../javadocs/1.0.x/overview-summary.html` as the link being checked, this rule checks for the existence of the 
 `overview-summary.html` file at `../../static/javadocs/1.0.x/overview-summary.html`.
 
-##### Note #####
+#### route-map Ordering
 Ensure each `route-map` pair is specific because the route-map option will validate relative links using the first 
 matching regex found in the configuration.
 
