@@ -116,31 +116,3 @@ For e.g. With the following configuration
 and `../../javadocs/1.0.x/overview-summary.html` as the link being checked, this rule checks for the existence of the
 `overview-summary.html` file at the first destination `../website/static/javadocs/1.0.x/overview-summary.html` instead 
 of the second destination `../../static/javadocs/1.0.x/overview-summary.html`.
-
-#### Conflicting Configurations
-
-When the `resolve-as-markdown`option is configured with the `route-map` option, there is a potential conflict between
-the two options. When the `resolve-as-markdown` option is set with an array of file extension(s), the option treats 
-files with those extensions as if they are markdown files. However, it may be assumed that the source regex in the 
-`route-map` option must include the markdown extension (.md) if the file extension is included in the regex.
-
-For e.g. `../../docs/file.html` and `../../docs/another-file.md` are the links to be checked, but only 
-`../../docs/file.html` is to be routed to `../subdir/file.md` for validation. 
-
-We would have the following configuration: 
-
-```json
-{
-    "rules": {
-        "no-dead-relative-link": {
-            "resolve-as-markdown": [".html"],
-            "route-map": [
-                {
-                    "source": "^../../docs/file.html",
-                    "destination": "../subdir/file.md"
-                }
-            ]
-        }
-    }
-}
-```
