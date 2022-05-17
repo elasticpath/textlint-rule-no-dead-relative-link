@@ -130,7 +130,7 @@ the following:
             "resolve-as-markdown": [".html"],
             "route-map": [
                 {
-                    "source": "^../../docs/file.html", <-- do not .md even though it will be resolved-as-markdown
+                    "source": "^../../docs/file.html", <-- do not use .md even though it will be resolved-as-markdown
                     "destination": "../subdir/file.md"
                 }
             ]
