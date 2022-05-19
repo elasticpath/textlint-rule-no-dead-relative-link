@@ -1,0 +1,100 @@
+name: CI/CD for the js-sdk
+
+on:
+  push:
+  pull_request:
+    branches:
+      - 'main'
+
+jobs:
+  # This job uses skip-duplicate-actions to skip one of the duplicate workflow runs when you push to a branch with an open PR.
+  check_duplicate_workflow:
+    needs: []
+    runs-on: ubuntu-20.04
+    outputs:
+      should_skip: ${{ steps.skip_check.outputs.should_skip }}
+    steps:
+      - id: skip_check
+        uses: fkirc/skip-duplicate-actions@v3.4.1
+        with:
+          skip_after_successful_duplicate: 'true'
+          concurrent_skipping: 'same_content_newer'
+          do_not_skip: '["push"]'
+
+  lint:
+    needs: [check_duplicate_workflow]
+    runs-on: ubuntu-20.04
+    if: ${{ needs.check_duplicate_workflow.outputs.should_skip != 'true' }}
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'yarn'
+      - name: Run lint
+        run: |
+          yarn install
+          yarn lint
+  
+  build:
+    needs: [check_duplicate_workflow]
+    runs-on: ubuntu-20.04
+    if: ${{ needs.check_duplicate_workflow.outputs.should_skip != 'true' }}
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'yarn'
+      - name: Build bundles
+        run: |
+          yarn install
+          yarn build
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ github.event.repository.name }}-${{ github.sha }}-${{ github.run_id }}-bundles
+          path: lib
+          retention-days: 3
+
+  test:
+    needs: [check_duplicate_workflow]
+    runs-on: ubuntu-20.04
+    if: ${{ needs.check_duplicate_workflow.outputs.should_skip != 'true' }}
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'yarn'
+      - name: Run tests
+        run: |
+          yarn install
+          yarn test
+  
+  release:
+    needs: [lint, build, test]
+    runs-on: ubuntu-20.04
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    env:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN_ELASTICPATH }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'yarn'
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ github.event.repository.name }}-${{ github.sha }}-${{ github.run_id }}-bundles
+          path: lib
+      - name: Release, publish package
+        run: |
+          yarn install
+          npx semantic-release

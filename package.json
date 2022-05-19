@@ -1,6 +1,6 @@
 {
   "name": "@elasticpath/textlint-rule-no-dead-relative-link",
-  "version": "1.1.1",
+  "version": "0.0.0-semantic-release",
   "description": "Textlint rule to validate relative links(including anchor links) in markdown documents",
   "main": "lib/no-dead-relative-link.js",
   "contributors": [
@@ -17,7 +17,8 @@
   "scripts": {
     "test": "textlint-scripts test",
     "build": "textlint-scripts build",
-    "prepublish": "npm run --if-present build"
+    "prepublish": "npm run --if-present build",
+    "lint": "eslint src"
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
@@ -39,6 +40,9 @@
     "branches": [
       "main"
     ]
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "keywords": [
     "textlintrule",

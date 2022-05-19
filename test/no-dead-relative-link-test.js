@@ -81,15 +81,15 @@ tester.run(
                     "resolve-as-markdown": ".html",
                     "route-map": [
                         {
-                            "source": "^../dir/subdir",
-                            "destination": "/dir/subdir"
+                            "source": "^../dir/subDir",
+                            "destination": "/dir/subDir"
                         },
                         {
                             "source": "^../dir/",
                             "destination": "../"
                         },
                         {
-                            "source": "^../../(subdir)/",
+                            "source": "^../../(subDir)/",
                             "destination": "$1/"
                         },
                         {
@@ -174,15 +174,15 @@ tester.run(
                 options: {
                     "route-map": [
                         {
-                            "source": "^../dir/subdir",
-                            "destination": "/dir/subdir"
+                            "source": "^../dir/subDir",
+                            "destination": "/dir/subDir"
                         },
                         {
                             "source": "^../dir/",
                             "destination": "../"
                         },
                         {
-                            "source": "^../../(subdir)/",
+                            "source": "^../../(subDir)/",
                             "destination": "$1/"
                         },
                         {
