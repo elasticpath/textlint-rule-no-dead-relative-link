@@ -1,4 +1,4 @@
-name: CI/CD for the js-sdk
+name: CI/CD
 
 on:
   push:

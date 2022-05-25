@@ -12,12 +12,11 @@
     "url": "https://github.com/elasticpath/textlint-rule-no-dead-relative-link"
   },
   "engines": {
-    "node": ">=6.0.0"
+    "node": ">=16.0.0"
   },
   "scripts": {
     "test": "textlint-scripts test",
     "build": "textlint-scripts build",
-    "prepublish": "npm run --if-present build",
     "lint": "eslint src"
   },
   "dependencies": {
